@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# place firebase.ptions files
+lib/firebase_options.dart
+lib/home/screens/.DS_Store
+lib/home/widgets/.DS_Store

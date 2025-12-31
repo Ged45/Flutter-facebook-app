@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 import 'sign_up_screen.dart';
 import '../../home/widgets/googel_button.dart';
-class FacebookLoginPage extends StatelessWidget {
-  const FacebookLoginPage({Key? key}) : super(key: key);
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart'; 
+import'../../home/screens/home_screen.dart';
+
+
+class FacebookLoginPage extends StatefulWidget {
+ const FacebookLoginPage({Key? key}) : super(key: key);
+  @override
+
+  State<FacebookLoginPage> createState() => _FacebookLoginPage();}
+
+  class _FacebookLoginPage extends State<FacebookLoginPage>{
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+ 
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +32,7 @@ class FacebookLoginPage extends StatelessWidget {
             const SizedBox(height: 40),
 
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(
                 hintText: 'Email or Phone',
                 filled: true,
@@ -29,6 +45,7 @@ class FacebookLoginPage extends StatelessWidget {
             const SizedBox(height: 16),
 
             TextField(
+              controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
                 hintText: 'Password',
@@ -48,7 +65,29 @@ class FacebookLoginPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                 ),
-                onPressed: () {},
+               onPressed: () async {
+    final auth = context.read<AuthProvider>();
+
+    final user = await auth.login(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    if (user != null) {
+      // Navigate to home
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Home(),
+        ),
+      );
+      
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(auth.error ?? "Login failed")),
+      );
+    }
+  },
                 child: const Text(
                   'Log In',
                   style: TextStyle(
@@ -61,7 +100,7 @@ class FacebookLoginPage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            googleButton(),
+            googleButton(context),
 
             const SizedBox(height: 20),
 

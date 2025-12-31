@@ -28,7 +28,7 @@ Widget facebookPost({
           children: [
             CircleAvatar(
               radius: 22,
-              backgroundImage: NetworkImage(profileImage),
+              backgroundImage: AssetImage(profileImage),
             ),
             SizedBox(width: 10),
             Column(
@@ -60,7 +60,7 @@ Widget facebookPost({
         // ─────────── Post Image ───────────
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: Image.network(
+          child: Image.asset(
             postImage,
             width: double.infinity,
             height: 250,

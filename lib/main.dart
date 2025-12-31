@@ -1,10 +1,29 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart' show Firebase;
+
 import 'auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'home/screens/face_home_screen.dart';
-void main() {
-  runApp(const facebook());
+import 'package:provider/provider.dart';
+import 'auth/providers/auth_provider.dart';
+import 'firebase_options.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: const facebook(),
+    ),
+  );
 }
+
 
 class facebook extends StatelessWidget {
   const facebook({super.key});
